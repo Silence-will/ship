@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>用户注册页面</title>
+    <link rel="stylesheet" type="text/css" href="/static/order/css/order.css">
+    <link rel="stylesheet" href="/static/order/css/animate.min.css" />
+    <link rel="stylesheet" href="/static/order/css/syalert.min.css" />
+    <script type="text/javascript" src="/static/order/js/jquery.min.js"></script>
+    <script src="/static/order/js/syalert.min.js"></script>
+    <style type="text/css">
+*{ margin:0px; padding:0px; box-sizing:border-box; }
+*:focus{ outline:none;}
+.tsm{ background:#333; font-size:13px; color:#fff; margin:20px; margin-top:0px; padding:12px; line-height:25px;}
+.tsm .p2{ margin-top:12px;}
+.btns{ padding:20px;}
+.btns div{ display:block; text-align:center; cursor:pointer; padding:10px; border-radius:5px; background:#0CC; color:#fff; margin-bottom:12px; width:100%;}
+</style>
+</head>
+<body>
+<div class="rg_layout">
+    <div class="rg_left">
+        <p class="p_reg">下订单</p>
+    </div>
+
+    <div class="rg_center">
+        <div class="re_form">
+
+            <form action="#" method="post">
+                <table>
+                    <tr>
+                        <td class="td_left"><label for="warehouse">国内交货仓库</label></td>
+                        <td class="td_right">
+                            <input id="warehouse" list="warehouses">
+                            <datalist id="warehouses">
+                                <option value="请选择">
+                            </datalist>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><label for="amazon_warehouses">FBA仓库</label></td>
+                        <td class="td_right">
+                            <input id="amazon_warehouses" list="amazon_warehousess">
+                            <datalist id="amazon_warehousess">
+                                <option value="请选择">
+                            </datalist>
+<!--                            <select id="amazon_warehouses" name="amazon_warehouses">-->
+<!--                                <option>请选择</option>-->
+<!--                            </select>-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><label for="overseas_warehouses">海外仓仓库</label></td>
+                        <td class="td_right">
+                            <input id="overseas_warehouses" list="overseas_warehousess">
+                            <datalist id="overseas_warehousess">
+                                <option value="请选择">
+                            </datalist>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><label for="server_model">服务模式</label></td>
+                        <td class="td_right">
+                            <input id="server_model" list="server_models">
+                            <datalist id="server_models">
+                                <option value="请选择">
+                            </datalist>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><label for="ship_date">船期</label></td>
+                        <td class="td_right">
+                            <input type="date" name="ship_date" id="ship_date" >
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left"><label >报关</label></td>
+                        <td class="td_right">
+                            <input type="radio" name="baoguan">正式报关退税
+                            <input type="radio" name="baoguan">不退税报关
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><label >报关</label></td>
+                        <td class="td_right">
+                            <input type="radio" name="qingguan">税金实报实销
+                            <input type="radio" name="qingguan">双清包税
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td colspan="2" align="center"><input type="submit" id="btn_sub" value="提交"></td>
+                    </tr>
+                </table>
+                <div class="btns">
+                    <div onClick="syalert.syopen('alert4')">模态弹窗</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 自定义弹窗 -->
+<div class="sy-alert sy-alert-model animated" sy-enter="zoomIn" sy-leave="zoomOut" sy-type="confirm" sy-mask="true" id="alert4">
+  <div class="sy-title">选择产品</div>
+  <div class="sy-content">
+    <div class="form">
+        <p class="input-item"><input type="text" placeholder="请输入手机号" /></p>
+        <p class="input-item"><input type="text" placeholder="请输入验证码" /><button class="getcode">获取验证码</button></p>
+        <p class="input-item"><input type="text" placeholder="请输入邮箱" /></p>
+        <p class="input-item"><input type="text" placeholder="请输入地址" /></p>
+        <p class="input-item"><input type="text" placeholder="请输入QQ" /></p>
+        <p class="input-item"><input type="text" placeholder="请输入传真" /></p>
+    </div>
+  </div>
+  <div class="sy-btn">
+    <button onClick="syalert.syhide('alert4')">取消</button>
+    <button onClick="ok('alert4')">确定</button>
+  </div>
+</div>
+</body>
+
+</html>
+
