@@ -4,34 +4,206 @@
     <meta charset="utf-8">
     <title>用户注册页面</title>
     <link rel="stylesheet" type="text/css" href="/static/order/css/order.css">
-    <link rel="stylesheet" href="/static/order/css/animate.min.css" />
-    <link rel="stylesheet" href="/static/order/css/syalert.min.css" />
+    <link rel="stylesheet" href="/static/order/css/animate.min.css"/>
+    <link rel="stylesheet" href="/static/order/css/syalert.min.css"/>
     <script type="text/javascript" src="/static/order/js/jquery.min.js"></script>
     <script src="/static/order/js/syalert.min.js"></script>
+    <script src="/static/order/js/order.js"></script>
+    <!--固定框架-->
+        <link rel='stylesheet' href='/static/order/css/bootstrap.min.css'>
+
+        <!--图标库-->
+        <link rel='stylesheet' href='/static/order/css/material-design-iconic-font.min.css'>
+
+        <!--核心样式-->
+        <link rel="stylesheet" href="/static/order/css/style.css">
+    <!--    <link rel="stylesheet" href="/static/order/css/backstage.css">-->
     <style type="text/css">
-*{ margin:0px; padding:0px; box-sizing:border-box; }
-*:focus{ outline:none;}
-.tsm{ background:#333; font-size:13px; color:#fff; margin:20px; margin-top:0px; padding:12px; line-height:25px;}
-.tsm .p2{ margin-top:12px;}
-.btns{ padding:20px;}
-.btns div{ display:block; text-align:center; cursor:pointer; padding:10px; border-radius:5px; background:#0CC; color:#fff; margin-bottom:12px; width:100%;}
-</style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        *:focus {
+            outline: none;
+        }
+
+        .tsm {
+            background: #333;
+            font-size: 13px;
+            color: #fff;
+            margin: 20px;
+            margin-top: 0px;
+            padding: 12px;
+            line-height: 25px;
+        }
+
+        .tsm .p2 {
+            margin-top: 12px;
+        }
+
+        .btns {
+            padding: 20px;
+        }
+
+        .btns div {
+            display: block;
+            text-align: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            background: #0CC;
+            color: #fff;
+            margin-bottom: 12px;
+            width: 150%;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            var show_count = 20;   //要显示的条数
+            var count = 1;    //递增的开始值，这里是你的ID
+            $("#btn_addtr").click(function () {
+
+                var length = $("#dynamicTable tbody tr").length;
+                //alert(length);
+                if (length < show_count)    //点击时候，如果当前的数字小于递增结束的条件
+                {
+                    $("#tab11 tbody tr").clone().appendTo("#dynamicTable tbody");   //在表格后面添加一行
+                    changeIndex();//更新行号
+                }
+            });
+        });
+
+        function changeIndex() {
+            var i = 1;
+            $("#dynamicTable tbody tr").each(function () { //循环tab tbody下的tr
+                $(this).find("input[name='NO']").val(i++);//更新行号
+            });
+        }
+
+        function deltr(opp) {
+
+            $(opp).parent().parent().remove();//移除当前行
+
+        }
+
+(function(){
+
+    $.get(
+        "get_data",
+        {"data_header":"warehouse"},
+        function (data){
+            var $warehouses= $("#warehouses")
+            $warehouses.empty()
+            for (const da of data["warehouse"]) {
+                $warehouses.append(`<option value="` + da + `">`)
+            }
+        },
+        'json'
+    );
+    $.get(
+        "get_data",
+        {"data_header":"overseas_warehouses"},
+        function (data){
+            var overseas_warehouses= $("#overseas_warehousess")
+            overseas_warehouses.empty()
+            for (const da of data["overseas_warehouses"]) {
+                overseas_warehouses.append(`<option value="` + da + `">`)
+            }
+        },
+        'json'
+    );
+    $.get(
+        "get_data",
+        {"data_header":"amazon_warehouses"},
+        function (data){
+            var $amazon_warehouses= $("#amazon_warehousess")
+            $amazon_warehouses.empty()
+            for (const da of data["amazon_warehouses"]) {
+                $amazon_warehouses.append(`<option value="` + da + `">`)
+            }
+        },
+        'json'
+    );
+    $.get(
+        "get_data",
+        {"data_header":"server_model"},
+        function (data){
+            var $server_models= $("#server_models")
+            $server_models.empty()
+            for (const da of data["server_model"]) {
+                $server_models.append(`<option value="` + da + `">`)
+            }
+        },
+        'json'
+    );
+    $.get(
+        "get_data",
+        {"data_header":"goods"},
+        function (data){
+            var $goodss= $("#goodss")
+            $goodss.empty()
+            for (const da of data["goods"]) {
+                $goodss.append(`<option value="` + da + `">`)
+            }
+        },
+        'json'
+    );
+})();
+    </script>
+
+
 </head>
 <body>
+<div id="sidebar">
+    <header>
+      <a href="#">美新订船</a>
+    </header>
+    <ul class="nav">
+      <li>
+        <a href="/order">
+          <i class="zmdi zmdi-view-dashboard"></i> 下订单
+        </a>
+      </li>
+      <li>
+        <a href="/show">
+          <i class="zmdi zmdi-link"></i> 查看订单
+        </a>
+      </li>
+      <li>
+        <a href="javascript:order.update_warehouse();">
+          <i class="zmdi zmdi-widgets"></i> 更新仓库
+        </a>
+      </li>
+      <li>
+        <a href="javascript:order.update_server();">
+          <i class="zmdi zmdi-settings"></i> 更新服务模式
+        </a>
+      </li>
+      <li>
+        <a href="javascript:order.update_goods();">
+          <i class="zmdi zmdi-comment-more"></i> 更新产品
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
 <div class="rg_layout">
     <div class="rg_left">
         <p class="p_reg">下订单</p>
     </div>
-
     <div class="rg_center">
         <div class="re_form">
 
-            <form action="#" method="post">
+            <form action="order_ship" method="post">
+                {% csrf_token %}
                 <table>
                     <tr>
                         <td class="td_left"><label for="warehouse">国内交货仓库</label></td>
                         <td class="td_right">
-                            <input id="warehouse" list="warehouses">
+                            <input id="warehouse" list="warehouses" name="warehouse">
                             <datalist id="warehouses">
                                 <option value="请选择">
                             </datalist>
@@ -40,19 +212,19 @@
                     <tr>
                         <td class="td_left"><label for="amazon_warehouses">FBA仓库</label></td>
                         <td class="td_right">
-                            <input id="amazon_warehouses" list="amazon_warehousess">
+                            <input id="amazon_warehouses" list="amazon_warehousess" name="amazon_warehouses">
                             <datalist id="amazon_warehousess">
                                 <option value="请选择">
                             </datalist>
-<!--                            <select id="amazon_warehouses" name="amazon_warehouses">-->
-<!--                                <option>请选择</option>-->
-<!--                            </select>-->
+                            <!--                            <select id="amazon_warehouses" name="amazon_warehouses">-->
+                            <!--                                <option>请选择</option>-->
+                            <!--                            </select>-->
                         </td>
                     </tr>
                     <tr>
                         <td class="td_left"><label for="overseas_warehouses">海外仓仓库</label></td>
                         <td class="td_right">
-                            <input id="overseas_warehouses" list="overseas_warehousess">
+                            <input id="overseas_warehouses" list="overseas_warehousess" name="overseas_warehouses">
                             <datalist id="overseas_warehousess">
                                 <option value="请选择">
                             </datalist>
@@ -61,7 +233,7 @@
                     <tr>
                         <td class="td_left"><label for="server_model">服务模式</label></td>
                         <td class="td_right">
-                            <input id="server_model" list="server_models">
+                            <input id="server_model" list="server_models" name="server_model">
                             <datalist id="server_models">
                                 <option value="请选择">
                             </datalist>
@@ -71,56 +243,87 @@
                     <tr>
                         <td class="td_left"><label for="ship_date">船期</label></td>
                         <td class="td_right">
-                            <input type="date" name="ship_date" id="ship_date" >
+                            <input  type="date" name="ship_date" id="ship_date">
                         </td>
                     </tr>
 
                     <tr>
-                        <td class="td_left"><label >报关</label></td>
+                        <td class="td_left"><label>报关</label></td>
                         <td class="td_right">
-                            <input type="radio" name="baoguan">正式报关退税
-                            <input type="radio" name="baoguan">不退税报关
+                            <input type="radio" value="1" name="baoguan">正式报关退税
+                            <input type="radio" value="2" name="baoguan">不退税报关
                         </td>
                     </tr>
                     <tr>
-                        <td class="td_left"><label >报关</label></td>
+                        <td class="td_left"><label>清关</label></td>
                         <td class="td_right">
-                            <input type="radio" name="qingguan">税金实报实销
-                            <input type="radio" name="qingguan">双清包税
+                            <input type="radio" value="1" name="qingguan">税金实报实销
+                            <input type="radio" value="2" name="qingguan">双清包税
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>
+                            <div class="btns">
+                                <div onClick="syalert.syopen('alert4')">导入产品</div>
+                            </div>
                         </td>
                     </tr>
 
-
-
-                    <tr>
-                        <td colspan="2" align="center"><input type="submit" id="btn_sub" value="提交"></td>
-                    </tr>
                 </table>
-                <div class="btns">
-                    <div onClick="syalert.syopen('alert4')">模态弹窗</div>
-                </div>
+                <table border="1" id="showGoods">
+                    <thead>
+                    <tr>
+                        <th width="20%">自定义编号</th>
+                        <th width="20%">FBAID</th>
+                        <th width="20%">FBAID</th>
+                        <th width="10%">产品箱数</th>
+                        <th width="10%">产品数量</th>
+                        <th width="10%">产品毛重</th>
+                        <th width="10%">操作</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div><input type="submit" id="btn_sub" value="提交"></div>
             </form>
         </div>
     </div>
 </div>
 
+
 <!-- 自定义弹窗 -->
-<div class="sy-alert sy-alert-model animated" sy-enter="zoomIn" sy-leave="zoomOut" sy-type="confirm" sy-mask="true" id="alert4">
-  <div class="sy-title">选择产品</div>
-  <div class="sy-content">
-    <div class="form">
-        <p class="input-item"><input type="text" placeholder="请输入手机号" /></p>
-        <p class="input-item"><input type="text" placeholder="请输入验证码" /><button class="getcode">获取验证码</button></p>
-        <p class="input-item"><input type="text" placeholder="请输入邮箱" /></p>
-        <p class="input-item"><input type="text" placeholder="请输入地址" /></p>
-        <p class="input-item"><input type="text" placeholder="请输入QQ" /></p>
-        <p class="input-item"><input type="text" placeholder="请输入传真" /></p>
+<div class="sy-alert sy-alert-model animated" sy-enter="zoomIn" sy-leave="zoomOut" sy-type="confirm" sy-mask="true"
+     id="alert4">
+    <div class="sy-title">选择产品</div>
+    <div class="sy-content" >
+        <div class="form" id="new_goods">
+            <p class="input-item">
+                <input id="goods_select" type="input" list="goodss" placeholder="请填入商品自定义编码">
+                <datalist id="goodss">
+                    <option value="请选择">
+                </datalist>
+            </p>
+            <p class="input-item">
+                <input type="input" placeholder="FBA shipment ID" id="FBAID_select"  />
+            </p>
+            <p class="input-item">
+                <input type="input" placeholder="AMAZON reference ID" id="referenceID_select" />
+            </p>
+            <p class="input-item">
+                <input type="input" placeholder="请输入箱数" id="boxNum_select" />
+            </p>
+            <p class="input-item">
+                <input type="input" placeholder="请输入产品申报数量" id="goodsNum_select" />
+            </p>
+            <p class="input-item">
+                <input type="input" placeholder="请输入产品总毛重" id="goodsWeight_select"/>
+            </p>
+        </div>
     </div>
-  </div>
-  <div class="sy-btn">
-    <button onClick="syalert.syhide('alert4')">取消</button>
-    <button onClick="ok('alert4')">确定</button>
-  </div>
+    <div class="sy-btn">
+        <button onClick="syalert.syhide('alert4')">取消</button>
+        <button onClick="order.add_goods()">确定</button>
+    </div>
 </div>
 </body>
 
