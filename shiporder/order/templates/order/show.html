@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>用户注册页面</title>
+    <link rel="stylesheet" type="text/css" href="/static/order/css/order.css">
+    <link rel="stylesheet" href="/static/order/css/animate.min.css"/>
+    <link rel="stylesheet" href="/static/order/css/syalert.min.css"/>
+    <script type="text/javascript" src="/static/order/js/jquery.min.js"></script>
+    <script src="/static/order/js/syalert.min.js"></script>
+    <script src="/static/order/js/order.js"></script>
+    <!--固定框架-->
+    <link rel='stylesheet' href='/static/order/css/bootstrap.min.css'>
+    <!--图标库-->
+    <link rel='stylesheet' href='/static/order/css/material-design-iconic-font.min.css'>
+    <!--核心样式-->
+    <link rel="stylesheet" href="/static/order/css/style.css">
+    <!--    <link rel="stylesheet" href="/static/order/css/backstage.css">-->
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        *:focus {
+            outline: none;
+        }
+
+        .tsm {
+            background: #333;
+            font-size: 13px;
+            color: #fff;
+            margin: 20px;
+            margin-top: 0px;
+            padding: 12px;
+            line-height: 25px;
+        }
+
+        .tsm .p2 {
+            margin-top: 12px;
+        }
+
+        .btns {
+            padding: 20px;
+        }
+
+        .btns div {
+            display: block;
+            text-align: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            background: #0CC;
+            color: #fff;
+            margin-bottom: 12px;
+            width: 150%;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            var show_count = 20;   //要显示的条数
+            var count = 1;    //递增的开始值，这里是你的ID
+            $("#btn_addtr").click(function () {
+
+                var length = $("#dynamicTable tbody tr").length;
+                //alert(length);
+                if (length < show_count)    //点击时候，如果当前的数字小于递增结束的条件
+                {
+                    $("#tab11 tbody tr").clone().appendTo("#dynamicTable tbody");   //在表格后面添加一行
+                    changeIndex();//更新行号
+                }
+            });
+        });
+
+        function changeIndex() {
+            var i = 1;
+            $("#dynamicTable tbody tr").each(function () { //循环tab tbody下的tr
+                $(this).find("input[name='NO']").val(i++);//更新行号
+            });
+        }
+
+        function deltr(opp) {
+
+            $(opp).parent().parent().remove();//移除当前行
+
+        }
+
+(function(){
+
+    $.get(
+        "get_data",
+        {"data_header":"warehouse"},
+        function (data){
+            var $warehouses= $("#warehouses")
+            $warehouses.empty()
+            for (const da of data["warehouse"]) {
+                $warehouses.append(`<option value="` + da + `">`)
+            }
+        },
+        'json'
+    );
+    $.get(
+        "get_data",
+        {"data_header":"overseas_warehouses"},
+        function (data){
+            var overseas_warehouses= $("#overseas_warehousess")
+            overseas_warehouses.empty()
+            for (const da of data["overseas_warehouses"]) {
+                overseas_warehouses.append(`<option value="` + da + `">`)
+            }
+        },
+        'json'
+    );
+    $.get(
+        "get_data",
+        {"data_header":"amazon_warehouses"},
+        function (data){
+            var $amazon_warehouses= $("#amazon_warehousess")
+            $amazon_warehouses.empty()
+            for (const da of data["amazon_warehouses"]) {
+                $amazon_warehouses.append(`<option value="` + da + `">`)
+            }
+        },
+        'json'
+    );
+    $.get(
+        "get_data",
+        {"data_header":"server_model"},
+        function (data){
+            var $server_models= $("#server_models")
+            $server_models.empty()
+            for (const da of data["server_model"]) {
+                $server_models.append(`<option value="` + da + `">`)
+            }
+        },
+        'json'
+    );
+    $.get(
+        "get_data",
+        {"data_header":"goods"},
+        function (data){
+            var $goodss= $("#goodss")
+            $goodss.empty()
+            for (const da of data["goods"]) {
+                $goodss.append(`<option value="` + da + `">`)
+            }
+        },
+        'json'
+    );
+})();
+    </script>
+
+
+</head>
+<body>
+<div id="sidebar">
+    <header>
+      <a href="#">美新订船</a>
+    </header>
+    <ul class="nav">
+      <li>
+        <a href="/order">
+          <i class="zmdi zmdi-view-dashboard"></i> 下订单
+        </a>
+      </li>
+      <li>
+        <a href="/show">
+          <i class="zmdi zmdi-link"></i> 查看订单
+        </a>
+      </li>
+      <li>
+        <a href="javascript:order.update_warehouse();">
+          <i class="zmdi zmdi-widgets"></i> 更新仓库
+        </a>
+      </li>
+      <li>
+        <a href="javascript:order.update_server();">
+          <i class="zmdi zmdi-settings"></i> 更新服务模式
+        </a>
+      </li>
+      <li>
+        <a href="javascript:order.update_goods();">
+          <i class="zmdi zmdi-comment-more"></i> 更新产品
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="rg_layout">
+    <div class="rg_left">
+        <p class="p_reg"></p>
+    </div>
+    <div class="rg_center">
+        <div class="re_form">
+            <table border="1" width="750px">
+                <tr>
+                    <th width="10%">订单编号</th>
+                    <th width="12%">国内出发地</th>
+                    <th width="12%">目的仓库</th>
+                    <th>服务模式</th>
+                    <th>船期</th>
+                    <th>报关</th>
+                    <th>清关</th>
+                    <th>操作</th>
+                    <th>状态</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
+

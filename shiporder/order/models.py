@@ -75,6 +75,8 @@ class order_list(models.Model):
     my_order = models.CharField(max_length=200)
     baoguan = models.IntegerField()
     qingguan = models.IntegerField()
+    status = models.CharField(max_length=200)
+    update_time = models.CharField(max_length=200)
 
     def __str__(self):
         return self.id

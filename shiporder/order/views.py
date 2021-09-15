@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import warehouse, amazon_warehouses, overseas_warehouses,server_model,goods_list,order_list,order_goods
 import json
 import requests
+import time
 from operator import itemgetter
 # Create your views here.
 
@@ -131,23 +132,30 @@ def order_ship(request):
         "amazon_warehouses":request.POST['amazon_warehouses'],
         "server_model": request.POST['server_model'],
         "ship_date": request.POST['ship_date'],
+        "my_order":request.POST['my_order'],
         "baoguan": request.POST['baoguan'],
         "qingguan": request.POST['qingguan'],
-
+        "status":"监控中",
+        "update_time":time.strftime("%Y-%m-%d %H:%M:%S")
     }
-    aa = order_list.objects.create(**data_dic)
-    aa.save()
-    goods_dic = {
-        "goods_selects": request.POST.getlist("goods_selects"),
-        "FBAID_selects": request.POST.getlist("FBAID_selects"),
-        "referenceID_selects": request.POST.getlist("referenceID_selects"),
-        "boxNum_selects": request.POST.getlist("boxNum_selects"),
-        "goodsNum_selects": request.POST.getlist("goodsNum_selects"),
-        "goodsWeight_selects": request.POST.getlist("goodsWeight_selects"),
-    }
+    if data_dic['amazon_warehouses']:
+        data_dic['is_fba'] = 1
+    else:
+        data_dic['is_fba'] = 0
+    order = order_list.objects.create(**data_dic)
+    order.save()
+    for i in range(len(request.POST.getlist("goods_selects"))):
+        goods_dic = {
+            "goods": request.POST.getlist("goods_selects")[i],
+            "fba_id": request.POST.getlist("FBAID_selects")[i],
+            "reference_id": request.POST.getlist("referenceID_selects")[i],
+            "box_num": request.POST.getlist("boxNum_selects")[i],
+            "goods_num": request.POST.getlist("goodsNum_selects")[i],
+            "goods_weight": request.POST.getlist("goodsWeight_selects")[i],
+            "order_id":order
+        }
+        order_goods.objects.create(**goods_dic).save()
+    return HttpResponse('OK')
 
-
-
-    print(data_dic)
-
-
+def show(request):
+    return render(request, "order/show.html")
